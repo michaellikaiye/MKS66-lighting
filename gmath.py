@@ -26,18 +26,15 @@ def get_lighting(normal, view, ambient, light, areflect, dreflect, sreflect ):
     for j in range(3):
         I = 0
         I += ambient[j] * areflect[j]
-        I += light[1][j] * dreflect[j] * (dot_product(normalize(normal), normalize(light[0]))
-        I += light[1][j] * sreflect[j] * math.pow( (dot_product( () , normalize(view))) , SPECULAR_EXP)
+        I += light[1][j] * dreflect[j] * (dot_product(normalize(normal), normalize(light[0])))
+        stuff = (dot_product( subtract( scale( (scale( normalize(normal), 2)) , (dot_product(normalize(normal), normalize(light[0])))) , normalize(light[0])) , normalize(view)))
+        if stuff < 0 and SPECULAR_EXP % 2 is 0:
+            stuff = -1 * math.pow( stuff, SPECULAR_EXP)
+        else:
+            stuff = math.pow(stuff, SPECULAR_EXP)
+        I += light[1][j] * sreflect[j] * stuff
+        color[j] = I
     return limit_color(color)
-
-def calculate_ambient(light, areflect):
-    pass
-
-def calculate_diffuse(light, dreflect, normal):
-    pass
-
-def calculate_specular(light, sreflect, view, normal):
-    pass
 
 def limit_color(color):
     for i in range(3):
@@ -45,6 +42,7 @@ def limit_color(color):
             color[i] = 0
         if color[i] > 255:
             color[i] = 255
+        color[i] = int(color[i])
     return color
 
 #vector functions
@@ -55,7 +53,13 @@ def normalize(vector):
                            vector[2] * vector[2])
     for i in range(3):
         vector[i] = vector[i] / magnitude
+    return vector
+    
 def scale(vector, const):
+    return [vector[0] * const, vector[1] * const, vector[2] * const]
+
+def subtract(a, b):
+    return [a[0] - b[0], a[1] - b[1], a[2] - b[2]]
 
 #Return the dot porduct of a . b
 def dot_product(a, b):
