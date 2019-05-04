@@ -17,7 +17,7 @@ light = [[0.5,
           1],
          [0,
           255,
-          0]]
+          255]]
 areflect = [0.1,
             0.1,
             0.1]
@@ -40,4 +40,4 @@ ident(t)
 csystems = [ t ]
 
 
-parse_file( 'temp', edges, polygons, csystems, screen, zbuffer, color, view, ambient, light, areflect, dreflect, sreflect)
+parse_file( 'script', edges, polygons, csystems, screen, zbuffer, color, view, ambient, light, areflect, dreflect, sreflect)
